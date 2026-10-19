@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HrAuth â€” Roles</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-brand">
+      <div class="brand-mark sm">HR</div><span>HrAuth</span>
+    </div>
+    <nav class="topnav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="roster.html">Roster</a>
+      <a href="upload.html">Upload attendance</a>
+      <a href="employees.html">Employees</a>
+      <a href="roles.html" class="active">Roles</a>
+      <a href="reconciliation.html">Reconciliation</a>
+      <a href="absent-report.html">Absent report</a>
+    </nav>
+    <div class="topbar-user">
+      <span id="topbar-username" class="muted"></span>
+      <button id="logout-btn" class="btn btn-ghost btn-sm">Sign out</button>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <section class="hero card">
+      <div>
+        <p class="muted">Access control</p>
+        <h2>Roles</h2>
+        <p class="muted small">
+          Define roles in the catalog, then assign them to employees.
+        </p>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="tabs">
+        <button id="tab-catalog" class="tab active" type="button">Catalog</button>
+        <button id="tab-assignment" class="tab" type="button">Assignment</button>
+      </div>
+
+      <!-- â”€â”€â”€â”€â”€ Catalog tab â”€â”€â”€â”€â”€ -->
+      <div id="panel-catalog">
+        <h3>Role catalog</h3>
+        <p class="muted small">
+          Names are case-sensitive. Deleting a role also removes it from any
+          employees who had it.
+        </p>
+
+        <form id="add-form" class="role-add-row">
+          <input id="add-name" type="text" placeholder="Role name (e.g. Admin)"
+                 maxlength="64" required />
+          <input id="add-desc" type="text"
+                 placeholder="Description (optional)" maxlength="256" />
+          <button id="add-btn" type="submit" class="btn btn-primary btn-inline">
+            Add role
+          </button>
+        </form>
+        <p id="catalog-error" class="error" hidden></p>
+
+        <div class="table-wrap">
+          <table class="data">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Assigned to</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="catalog-rows">
+              <tr><td colspan="4" class="muted">Loadingâ€¦</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- â”€â”€â”€â”€â”€ Assignment tab â”€â”€â”€â”€â”€ -->
+      <div id="panel-assignment" hidden>
+        <h3>Employee assignments</h3>
+        <div class="roster-controls">
+          <div>
+            <label for="emp-search">Search</label>
+            <input id="emp-search" type="text"
+                   placeholder="ID, username, or name (Arabic OK)" />
+          </div>
+          <div>
+            <label for="emp-pagesize">Page size</label>
+            <select id="emp-pagesize">
+              <option>25</option><option>50</option><option>100</option>
+            </select>
+          </div>
+        </div>
+        <p id="assign-status" class="muted small">Loadingâ€¦</p>
+        <p id="assign-error" class="error" hidden></p>
+
+        <div class="table-wrap">
+          <table class="data">
+            <thead>
+              <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Roles (click to toggle, then Save)</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="assign-rows"></tbody>
+          </table>
+        </div>
+
+        <div class="pagination">
+          <button id="page-prev" class="btn btn-sm">â† Prev</button>
+          <span id="page-label" class="muted small">Page 1</span>
+          <button id="page-next" class="btn btn-sm">Next â†’</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <p id="toast" class="toast" hidden></p>
+  <script src="roles.js"></script>
+</body>
+</html>

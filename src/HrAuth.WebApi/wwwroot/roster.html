@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HrAuth â€” Employee Roster</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-brand">
+      <div class="brand-mark sm">HR</div><span>HrAuth</span>
+    </div>
+    <nav class="topnav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="roster.html" class="active">Roster</a>
+      <a href="upload.html">Upload attendance</a>
+      <a href="employees.html">Employees</a>
+      <a href="roles.html">Roles</a>
+      <a href="reconciliation.html">Reconciliation</a>
+      <a href="absent-report.html">Absent report</a>
+    </nav>
+    <div class="topbar-user">
+      <span id="topbar-username" class="muted"></span>
+      <button id="logout-btn" class="btn btn-ghost btn-sm">Sign out</button>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <section class="hero card">
+      <div>
+        <p class="muted">Shift schedule</p>
+        <h2>Employee roster</h2>
+        <p class="muted small">Fetched from the SmartHCM roster service.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Look up roster</h3>
+      <div class="roster-controls">
+        <div>
+          <label for="employeeId">Employee ID</label>
+          <input id="employeeId" type="text" placeholder="00000314" />
+        </div>
+        <div>
+          <label for="date">Date</label>
+          <input id="date" type="date" />
+        </div>
+        <button id="fetch-btn" class="btn btn-primary btn-inline">
+          <span class="btn-label">Get roster</span>
+          <span class="spinner" hidden></span>
+        </button>
+      </div>
+      <p id="roster-error" class="error" hidden></p>
+    </section>
+
+    <section id="roster-section" class="card" hidden>
+      <div class="shift-head">
+        <div>
+          <span id="shift-name" class="pill pill-role">â€”</span>
+          <span id="shift-range" class="shift-range"></span>
+        </div>
+        <span id="shift-meta" class="muted small"></span>
+      </div>
+      <div class="table-wrap">
+        <table class="data">
+          <thead>
+            <tr>
+              <th>#</th><th>Period</th><th>Start</th><th>End</th>
+              <th>Required hours</th>
+            </tr>
+          </thead>
+          <tbody id="period-rows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="empty-section" class="card" hidden>
+      <p id="empty-text" class="muted">No shift assigned.</p>
+    </section>
+  </main>
+
+  <p id="toast" class="toast" hidden></p>
+  <script src="roster.js"></script>
+</body>
+</html>

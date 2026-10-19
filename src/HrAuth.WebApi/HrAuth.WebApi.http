@@ -1,0 +1,43 @@
+@HrAuth.WebApi_HostAddress = http://localhost:5284
+
+### Login — authenticate and receive a JWT pair
+POST {{HrAuth.WebApi_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "userName": "your-username",
+  "password": "your-password"
+}
+
+### Refresh token — exchange the pair for a fresh one
+POST {{HrAuth.WebApi_HostAddress}}/api/auth/refresh-token
+Content-Type: application/json
+
+{
+  "token": "PASTE_ACCESS_TOKEN",
+  "refreshToken": "PASTE_REFRESH_TOKEN"
+}
+
+### Validate token — check whether a bearer token is still accepted
+POST {{HrAuth.WebApi_HostAddress}}/api/auth/validate-token
+Authorization: Bearer PASTE_ACCESS_TOKEN
+
+### Absences (D33) — a page of the Sep-2026 payroll period (16-Aug..15-Sep), men
+GET {{HrAuth.WebApi_HostAddress}}/api/absences?payMonth=2026-09&gender=M&pageNumber=1&pageSize=25
+Authorization: Bearer PASTE_ACCESS_TOKEN
+
+### Absences — one employee over an explicit range, without synthesized days
+GET {{HrAuth.WebApi_HostAddress}}/api/absences?from=2026-09-01&to=2026-09-15&employeeId=00000163&includeSynthesized=false
+Authorization: Bearer PASTE_ACCESS_TOKEN
+
+### Absence rates — all SmartHCM grades (add ?positionId=118 for one position's grades)
+GET {{HrAuth.WebApi_HostAddress}}/api/absence-rates/grades
+Authorization: Bearer PASTE_ACCESS_TOKEN
+
+### Absence rates — all positions with their allowed grades
+GET {{HrAuth.WebApi_HostAddress}}/api/absence-rates/positions?includeInactive=false
+Authorization: Bearer PASTE_ACCESS_TOKEN
+
+### Absence rates — attendance periods with monthly / daily rate
+GET {{HrAuth.WebApi_HostAddress}}/api/absence-rates/periods
+Authorization: Bearer PASTE_ACCESS_TOKEN

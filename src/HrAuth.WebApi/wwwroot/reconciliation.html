@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HrAuth â€” Roster Reconciliation</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <link rel="stylesheet" href="styles.css?v=3" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-brand">
+      <div class="brand-mark sm">HR</div><span>HrAuth</span>
+    </div>
+    <nav class="topnav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="roster.html">Roster</a>
+      <a href="upload.html">Upload attendance</a>
+      <a href="employees.html">Employees</a>
+      <a href="roles.html">Roles</a>
+      <a href="reconciliation.html" class="active">Reconciliation</a>
+      <a href="absent-report.html">Absent report</a>
+    </nav>
+    <div class="topbar-user">
+      <span id="topbar-username" class="muted"></span>
+      <button id="logout-btn" class="btn btn-ghost btn-sm">Sign out</button>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <section class="hero card">
+      <div>
+        <p class="muted">Attendance vs schedule</p>
+        <h2>Roster reconciliation</h2>
+        <p class="muted small">
+          Missing periods, late arrivals and early departures.
+          Click any stat or row for details.
+        </p>
+      </div>
+    </section>
+
+    <section id="empty-section" class="card" hidden>
+      <p class="muted">
+        No reconciliation data yet â€”
+        <a href="upload.html">upload an attendance file</a>
+        to see missing periods, late arrivals and early departures.
+      </p>
+    </section>
+
+    <section id="recon-section" class="card" hidden>
+      <h3>Reconciliation results â€” <span id="result-file" class="muted"></span></h3>
+
+      <!-- Clickable stat cards (also act as one-click filter shortcuts). -->
+      <div class="stats stats-clickable">
+        <button class="stat" data-stat="all" type="button">
+          <div id="rec-days" class="num">0</div>
+          <div class="lbl">Employee-days</div>
+        </button>
+        <button class="stat bad" data-stat="missing" type="button">
+          <div id="rec-missing" class="num">0</div>
+          <div class="lbl">Missing periods</div>
+        </button>
+        <button class="stat warn" data-stat="late" type="button">
+          <div id="rec-late" class="num">0</div>
+          <div class="lbl">Late minutes</div>
+        </button>
+        <button class="stat warn" data-stat="early" type="button">
+          <div id="rec-early" class="num">0</div>
+          <div class="lbl">Early-out minutes</div>
+        </button>
+        <button class="stat" data-stat="noroster" type="button">
+          <div id="rec-noroster" class="num">0</div>
+          <div class="lbl">No roster</div>
+        </button>
+      </div>
+
+      <!-- Filter panel. -->
+      <div class="filter-panel">
+        <div class="filter-panel-head">
+          <div class="filter-title">
+            <span class="filter-icon">âš™</span>
+            <span>Filters</span>
+            <span id="dirty-dot" class="dirty-dot" title="Unapplied changes" hidden></span>
+          </div>
+          <div class="filter-meta">
+            <span id="filter-status" class="muted small"></span>
+          </div>
+        </div>
+
+        <div class="filter-grid">
+          <div class="filter-field filter-field-wide">
+            <label for="f-search">Employee</label>
+            <div class="input-with-icon">
+              <span class="input-icon">ðŸ”</span>
+              <input id="f-search" type="text"
+                     placeholder="Search by ID or name (Arabic OK)" />
+            </div>
+          </div>
+          <div class="filter-field">
+            <label for="f-from">From</label>
+            <input id="f-from" type="date" />
+          </div>
+          <div class="filter-field">
+            <label for="f-to">To</label>
+            <input id="f-to" type="date" />
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <span class="filter-row-label">Status</span>
+          <div class="chips">
+            <label class="chip chip-warn">
+              <input type="checkbox" data-flag="late" checked />
+              <span class="chip-dot"></span><span>Late</span>
+            </label>
+            <label class="chip chip-warn">
+              <input type="checkbox" data-flag="early" checked />
+              <span class="chip-dot"></span><span>Early-out</span>
+            </label>
+            <label class="chip chip-bad">
+              <input type="checkbox" data-flag="missing" checked />
+              <span class="chip-dot"></span><span>Missing</span>
+            </label>
+            <label class="chip chip-ok">
+              <input type="checkbox" data-flag="clean" checked />
+              <span class="chip-dot"></span><span>Clean</span>
+            </label>
+            <label class="chip chip-mute">
+              <input type="checkbox" data-flag="noroster" checked />
+              <span class="chip-dot"></span><span>No roster</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="filter-actions-row">
+          <button id="f-reset" class="btn btn-sm" type="button">Reset</button>
+          <button id="f-apply" class="btn btn-primary btn-inline btn-sm" type="button">
+            Apply filters
+          </button>
+        </div>
+      </div>
+
+      <p id="rec-allgood" class="rec-allgood" hidden>
+        âœ“ Every scheduled period attended on time.
+      </p>
+
+      <div class="table-wrap">
+        <table class="data data-clickable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Employee ID</th>
+              <th>Name</th>
+              <th>Position</th>
+              <th>Date</th>
+              <th>Day</th>
+              <th>Shift</th>
+              <th>Scheduled periods â€” âœ“ on time / âœ— missing / late Â· early</th>
+              <th>Punches</th>
+            </tr>
+          </thead>
+          <tbody id="rec-rows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="reconciliation.js?v=3"></script>
+</body>
+</html>

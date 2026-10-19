@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HrAuth â€” Employee directory</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-brand">
+      <div class="brand-mark sm">HR</div><span>HrAuth</span>
+    </div>
+    <nav class="topnav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="roster.html">Roster</a>
+      <a href="upload.html">Upload attendance</a>
+      <a href="employees.html" class="active">Employees</a>
+      <a href="roles.html">Roles</a>
+      <a href="reconciliation.html">Reconciliation</a>
+      <a href="absent-report.html">Absent report</a>
+    </nav>
+    <div class="topbar-user">
+      <span id="topbar-username" class="muted"></span>
+      <button id="logout-btn" class="btn btn-ghost btn-sm">Sign out</button>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <section class="hero card">
+      <div>
+        <p class="muted">Employee directory</p>
+        <h2>Employees</h2>
+        <p class="muted small">
+          Browse, add, or bulk-import employees so reconciliation can label
+          attendance rows by name.
+        </p>
+      </div>
+      <div class="hero-stats">
+        <span id="hero-total" class="num">â€”</span>
+        <span class="lbl">in directory</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="tabs">
+        <button id="tab-directory" class="tab active" type="button">Directory</button>
+        <button id="tab-import"    class="tab" type="button">Import CSV</button>
+      </div>
+
+      <!-- â”€â”€â”€â”€â”€ Directory tab â”€â”€â”€â”€â”€ -->
+      <div id="panel-directory">
+        <h3>Add new employee</h3>
+        <form id="add-form" class="role-add-row">
+          <input id="add-id" type="text" inputmode="numeric"
+                 placeholder="Employee ID (digits â€” padded to 8)"
+                 maxlength="32" required />
+          <input id="add-name" type="text" dir="auto"
+                 placeholder="Full name (Arabic OK)"
+                 maxlength="256" required />
+          <input id="add-username" type="text"
+                 placeholder="Username (optional)" maxlength="128" />
+          <input id="add-position" type="text" dir="auto"
+                 placeholder="Position (optional)" maxlength="128" />
+          <input id="add-supervisor" type="text" inputmode="numeric"
+                 placeholder="Supervisor ID (optional)" maxlength="32" />
+          <button id="add-btn" type="submit" class="btn btn-primary btn-inline">
+            <span class="btn-label">Add employee</span>
+            <span class="spinner" hidden></span>
+          </button>
+        </form>
+        <p id="add-error" class="error" hidden></p>
+
+        <h3 style="margin-top:18px;">Directory</h3>
+        <div class="roster-controls">
+          <div>
+            <label for="emp-search">Search</label>
+            <input id="emp-search" type="text"
+                   placeholder="ID, username, or name (Arabic OK)" />
+          </div>
+          <div>
+            <label for="emp-pagesize">Page size</label>
+            <select id="emp-pagesize">
+              <option>25</option><option>50</option><option>100</option>
+            </select>
+          </div>
+        </div>
+        <p id="dir-status" class="muted small">Loadingâ€¦</p>
+        <p id="dir-error" class="error" hidden></p>
+
+        <div class="table-wrap">
+          <table class="data">
+            <thead>
+              <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Position</th>
+                <th>Supervisor</th>
+                <th>Roles</th>
+              </tr>
+            </thead>
+            <tbody id="dir-rows"></tbody>
+          </table>
+        </div>
+
+        <div class="pagination">
+          <button id="page-prev" class="btn btn-sm">â† Prev</button>
+          <span id="page-label" class="muted small">Page 1</span>
+          <button id="page-next" class="btn btn-sm">Next â†’</button>
+        </div>
+      </div>
+
+      <!-- â”€â”€â”€â”€â”€ Import CSV tab â”€â”€â”€â”€â”€ -->
+      <div id="panel-import" hidden>
+        <h3>Upload directory CSV</h3>
+        <p class="muted small">
+          Accepted formats: <code>ID,Name</code> Â· <code>ID&lt;TAB&gt;Name</code> Â·
+          <code>ID;Name</code>. UTF-8 only. A header row on line 1 is auto-skipped.
+          IDs are padded to 8 digits. Existing employees keep their
+          UserName/Roles/LastLoginUtc â€” only the display name is updated.
+        </p>
+
+        <form id="import-form">
+          <input id="file-input" type="file" accept=".csv,.tsv,.txt,text/csv"
+                 required />
+          <button id="import-btn" type="submit" class="btn btn-primary">
+            <span class="btn-label">Import</span>
+            <span class="spinner" hidden></span>
+          </button>
+        </form>
+
+        <h3>Or import from the HR API</h3>
+        <p class="muted small">
+          Fetches every employee (ID, name, position) straight from the HR API
+          — no file needed. Positions are only written when the HR API reports
+          one, so a blank never erases a stored value.
+        </p>
+        <button id="hrapi-import-btn" type="button" class="btn btn-primary">
+          <span class="btn-label">Import from HR API</span>
+          <span class="spinner" hidden></span>
+        </button>
+
+        <p id="import-error" class="error" hidden></p>
+
+        <div id="result-section" class="card" hidden>
+          <h3>Import result â€” <span id="result-file" class="muted"></span></h3>
+          <div class="stats">
+            <div class="stat">
+              <div id="stat-parsed" class="num">0</div>
+              <div class="lbl">Lines parsed</div>
+            </div>
+            <div class="stat">
+              <div id="stat-imported" class="num">0</div>
+              <div class="lbl">Rows written</div>
+            </div>
+            <div class="stat warn">
+              <div id="stat-skipped" class="num">0</div>
+              <div class="lbl">Rows skipped</div>
+            </div>
+            <div class="stat">
+              <div id="stat-total" class="num">0</div>
+              <div class="lbl">Total in DB</div>
+            </div>
+          </div>
+
+          <div id="warnings-wrap" hidden>
+            <h4>Skipped rows (first 25)</h4>
+            <ul id="warnings-list" class="warnings"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <p id="toast" class="toast" hidden></p>
+  <script src="employees.js"></script>
+</body>
+</html>

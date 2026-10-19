@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HrAuth · Dawam — Project Overview</title>
+<style>
+  :root{
+    --bg:#0b1020; --bg2:#11182e; --card:#161f3a; --card2:#1b264a;
+    --ink:#e8edf9; --muted:#9aa6c7; --line:#27325a;
+    --brand:#5b8cff; --brand2:#7c5cff; --teal:#2dd4bf; --amber:#fbbf24;
+    --green:#34d399; --red:#fb7185; --pill:#22305c;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+    background:linear-gradient(160deg,#0b1020,#0e1428 40%,#0b1020); color:var(--ink);
+    line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--brand); text-decoration:none}
+  .wrap{max-width:1140px; margin:0 auto; padding:0 22px}
+
+  /* Hero */
+  header.hero{
+    position:relative; overflow:hidden;
+    background:radial-gradient(900px 400px at 80% -10%,rgba(124,92,255,.35),transparent),
+               radial-gradient(700px 360px at 10% 10%,rgba(45,212,191,.18),transparent);
+    border-bottom:1px solid var(--line);
+  }
+  .hero-inner{padding:64px 0 50px}
+  .eyebrow{display:inline-flex; gap:8px; align-items:center; font-size:13px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--teal); font-weight:700; margin-bottom:16px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 12px var(--teal)}
+  h1{font-size:clamp(34px,5vw,56px); margin:0 0 10px; line-height:1.05; font-weight:800;
+     background:linear-gradient(90deg,#fff,#bcd0ff); -webkit-background-clip:text; background-clip:text; color:transparent}
+  .ar{font-size:.62em; color:var(--teal); -webkit-text-fill-color:var(--teal)}
+  .lede{font-size:18px; color:var(--muted); max-width:760px}
+  .badges{display:flex; flex-wrap:wrap; gap:10px; margin-top:26px}
+  .badge{background:var(--pill); border:1px solid var(--line); color:var(--ink);
+    padding:7px 14px; border-radius:999px; font-size:13px; font-weight:600}
+  .badge b{color:var(--teal)}
+
+  /* Section */
+  section{padding:52px 0; border-bottom:1px solid rgba(39,50,90,.5)}
+  .kicker{color:var(--brand); font-weight:700; letter-spacing:.1em; text-transform:uppercase; font-size:13px}
+  h2{font-size:30px; margin:6px 0 6px; font-weight:800}
+  .sub{color:var(--muted); margin:0 0 30px; max-width:720px}
+
+  .grid{display:grid; gap:18px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:880px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+  .card{background:linear-gradient(180deg,var(--card),var(--card2)); border:1px solid var(--line);
+    border-radius:16px; padding:22px; transition:transform .15s ease,border-color .15s ease}
+  .card:hover{transform:translateY(-3px); border-color:var(--brand)}
+  .card .ico{font-size:26px; margin-bottom:10px}
+  .card h3{margin:0 0 6px; font-size:18px}
+  .card p{margin:0; color:var(--muted); font-size:14.5px}
+
+  /* Architecture layers */
+  .layers{display:flex; flex-direction:column; gap:14px}
+  .layer{display:grid; grid-template-columns:200px 1fr; gap:18px; align-items:center;
+    border:1px solid var(--line); border-radius:14px; padding:18px 20px; position:relative;
+    background:linear-gradient(90deg,rgba(91,140,255,.08),transparent)}
+  .layer .name{font-weight:800; font-size:17px}
+  .layer .name small{display:block; color:var(--muted); font-weight:500; font-size:12.5px; margin-top:3px}
+  .layer .desc{color:var(--muted); font-size:14.5px}
+  .layer.l1{border-left:4px solid var(--brand)}
+  .layer.l2{border-left:4px solid var(--brand2)}
+  .layer.l3{border-left:4px solid var(--teal)}
+  .layer.l4{border-left:4px solid var(--green)}
+  .arrow{text-align:center; color:var(--muted); font-size:13px; margin:-4px 0}
+  @media(max-width:880px){.layer{grid-template-columns:1fr; gap:6px}}
+
+  /* API table */
+  .api{display:flex; flex-direction:column; gap:8px}
+  .ep{display:grid; grid-template-columns:78px 1fr; gap:14px; align-items:center;
+    border:1px solid var(--line); border-radius:11px; padding:11px 14px; background:var(--card)}
+  .ep:hover{border-color:var(--brand)}
+  .m{font-weight:800; font-size:12px; text-align:center; padding:4px 0; border-radius:7px; letter-spacing:.04em}
+  .GET{background:rgba(52,211,153,.16); color:var(--green); border:1px solid rgba(52,211,153,.4)}
+  .POST{background:rgba(91,140,255,.16); color:var(--brand); border:1px solid rgba(91,140,255,.4)}
+  .PUT{background:rgba(251,191,36,.16); color:var(--amber); border:1px solid rgba(251,191,36,.4)}
+  .route{font-family:"Cascadia Code",Consolas,monospace; font-size:14px}
+  .route span{color:var(--muted); display:block; font-family:"Segoe UI",sans-serif; font-size:13px; margin-top:2px}
+
+  .grp-h{display:flex; align-items:center; gap:10px; margin:24px 0 12px; font-size:15px; font-weight:700; color:var(--teal)}
+  .grp-h::after{content:""; flex:1; height:1px; background:var(--line)}
+
+  /* External APIs */
+  .ext{display:grid; grid-template-columns:46px 1fr; gap:14px; align-items:flex-start;
+    border:1px solid var(--line); border-radius:14px; padding:18px; background:var(--card)}
+  .ext .e{font-size:24px; width:46px;height:46px; display:grid;place-items:center;
+    background:var(--pill); border-radius:12px; border:1px solid var(--line)}
+  .ext h3{margin:0 0 4px; font-size:16.5px}
+  .ext code{font-family:Consolas,monospace; font-size:12.5px; color:var(--teal); background:rgba(45,212,191,.08);
+    padding:2px 7px; border-radius:6px}
+  .ext p{margin:8px 0 0; color:var(--muted); font-size:14px}
+
+  /* tech chips */
+  .tech{display:flex; flex-wrap:wrap; gap:10px}
+  .chip{display:flex; gap:8px; align-items:center; background:var(--card); border:1px solid var(--line);
+    border-radius:10px; padding:10px 14px; font-size:14px}
+  .chip b{color:var(--ink)} .chip span{color:var(--muted)}
+
+  /* flow */
+  .flow{display:flex; flex-direction:column; gap:0}
+  .step{display:grid; grid-template-columns:36px 1fr; gap:16px; padding:0 0 22px; position:relative}
+  .step:not(:last-child)::before{content:""; position:absolute; left:17px; top:34px; bottom:-2px; width:2px; background:var(--line)}
+  .num{width:36px;height:36px;border-radius:50%; display:grid;place-items:center; font-weight:800;
+    background:linear-gradient(135deg,var(--brand),var(--brand2)); color:#fff; font-size:15px; z-index:1}
+  .step .b{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:13px 16px}
+  .step .b b{font-size:15px} .step .b p{margin:4px 0 0; color:var(--muted); font-size:14px}
+  .step .b code{font-family:Consolas,monospace; font-size:12.5px; color:var(--teal)}
+
+  footer{padding:34px 0 60px; color:var(--muted); font-size:13.5px}
+  .meta{display:flex; flex-wrap:wrap; gap:8px 22px; margin-top:8px}
+  .note{font-size:12.5px; color:var(--muted); margin-top:14px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap hero-inner">
+    <div class="eyebrow"><span class="dot"></span> Clean Architecture · ASP.NET Core 9</div>
+    <h1>HrAuth <span class="ar">دوام · Dawam</span></h1>
+    <p class="lede">An HR back-office tool that authenticates Qassim University staff against the central
+      <b>HaramAPI</b> identity service, then delivers an employee directory, attendance reconciliation,
+      rosters and role management through an RTL Arabic single-page app.</p>
+    <div class="badges">
+      <span class="badge"><b>.NET</b> 9.0</span>
+      <span class="badge"><b>C#</b> 13</span>
+      <span class="badge"><b>EF Core</b> + PostgreSQL</span>
+      <span class="badge"><b>React</b> 18 (no-build)</span>
+      <span class="badge"><b>Oracle</b> · SmartHCM</span>
+      <span class="badge"><b>Swagger</b> / OpenAPI</span>
+    </div>
+  </div>
+</header>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <div class="kicker">What it does</div>
+    <h2>Core Features</h2>
+    <p class="sub">Four functional pillars, each backed by a use-case service in the Application layer and exposed through a dedicated REST controller.</p>
+    <div class="grid g3">
+      <div class="card">
+        <div class="ico">🔐</div>
+        <h3>Authentication</h3>
+        <p>Logs users in against the external HR identity API (<code>hrapi.qm.edu.sa</code>), manages token refresh &amp; validation, and keeps a local audit row per employee. Passwords are never stored — identity is delegated. Auto-logout after 10 min idle.</p>
+      </div>
+      <div class="card">
+        <div class="ico">👥</div>
+        <h3>Employee Directory</h3>
+        <p>List, search &amp; filter employees by position, add them manually or via CSV import (≤10&nbsp;MB, auto-delimiter), and sync each employee's position &amp; supervisor from SmartHCM.</p>
+      </div>
+      <div class="card">
+        <div class="ico">🕒</div>
+        <h3>Attendance Reconciliation</h3>
+        <p>Three sources — uploaded punch exports, SmartHCM daily summaries, or raw Oracle punches — matched against rosters to flag late arrivals, early departures &amp; missing periods with per-position grace margins.</p>
+      </div>
+      <div class="card">
+        <div class="ico">📅</div>
+        <h3>Rosters</h3>
+        <p>Per-employee shift roster lookup by date, sourced from SmartHCM and cached locally. Rosters drive the attendance matching engine.</p>
+      </div>
+      <div class="card">
+        <div class="ico">🗂️</div>
+        <h3>Roles</h3>
+        <p>Full role-catalog CRUD and assignment of roles to employees, stored as PostgreSQL <code>text[]</code> arrays on each employee record.</p>
+      </div>
+      <div class="card">
+        <div class="ico">🌴</div>
+        <h3>Leaves</h3>
+        <p>Fetches an employee's pending leaves from SmartHCM, stores them locally, and feeds reconciliation so days on approved leave aren't flagged as absences.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture">
+  <div class="wrap">
+    <div class="kicker">How it's built</div>
+    <h2>Clean Architecture — 4 Layers</h2>
+    <p class="sub">Dependencies point strictly inward. The Application layer defines ports (interfaces); Infrastructure supplies the adapters; <code>Program.cs</code> wires them at startup. Cross-layer outcomes use a <code>Result&lt;T&gt;</code> type instead of throwing.</p>
+    <div class="layers">
+      <div class="layer l1">
+        <div class="name">HrAuth.WebApi <small>entry point</small></div>
+        <div class="desc">Controllers (Auth · Employees · Attendance · Roles · Roster), <code>Program.cs</code> DI/CORS/Swagger, and the static Dawam SPA in <code>wwwroot</code>.</div>
+      </div>
+      <div class="arrow">▼ depends on</div>
+      <div class="layer l2">
+        <div class="name">HrAuth.Infrastructure <small>adapters</small></div>
+        <div class="desc">EF Core repositories, the HrAuth REST client, SmartHCM ASMX / Oracle providers, crypto &amp; migrations. Implements the ports.</div>
+      </div>
+      <div class="arrow">▼ depends on</div>
+      <div class="layer l3">
+        <div class="name">HrAuth.Application <small>use-cases + ports</small></div>
+        <div class="desc">Services (Authentication, Employee, Reconciliation, Roster, Role), port interfaces (<code>IHrAuthProvider</code>, <code>I*Repository</code>), DTOs &amp; <code>Result&lt;T&gt;</code>.</div>
+      </div>
+      <div class="arrow">▼ depends on</div>
+      <div class="layer l4">
+        <div class="name">HrAuth.Domain <small>no dependencies</small></div>
+        <div class="desc">Entities &amp; domain rules: AuthSession, AuthenticatedUser, AttendanceRecord, Roster, EmployeeId normalization.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERNAL API -->
+<section id="api">
+  <div class="wrap">
+    <div class="kicker">REST surface</div>
+    <h2>API Endpoints</h2>
+    <p class="sub">The Web API the Dawam SPA consumes. Swagger UI is available at <code>/swagger</code> in Development.</p>
+
+    <div class="grp-h">Authentication</div>
+    <div class="api">
+      <div class="ep"><div class="m POST">POST</div><div class="route">/api/auth/login<span>Log in (LoginRequest → AuthResult: JWT + refresh token)</span></div></div>
+      <div class="ep"><div class="m POST">POST</div><div class="route">/api/auth/refresh-token<span>Exchange a token pair for a fresh one</span></div></div>
+      <div class="ep"><div class="m POST">POST</div><div class="route">/api/auth/validate-token<span>Validate the Authorization: Bearer token</span></div></div>
+    </div>
+
+    <div class="grp-h">Employees</div>
+    <div class="api">
+      <div class="ep"><div class="m GET">GET</div><div class="route">/api/employees<span>Paginated list — search, page, pageSize, position filter</span></div></div>
+      <div class="ep"><div class="m GET">GET</div><div class="route">/api/employees/positions<span>Distinct positions for the directory filter</span></div></div>
+      <div class="ep"><div class="m GET">GET</div><div class="route">/api/employees/{id}<span>Single employee (404 if missing)</span></div></div>
+      <div class="ep"><div class="m POST">POST</div><div class="route">/api/employees<span>Add one employee (201)</span></div></div>
+      <div class="ep"><div class="m POST">POST</div><div class="route">/api/employees/{id}/sync-from-smarthcm<span>Pull &amp; persist position + supervisor from SmartHCM</span></div></div>
+      <div class="ep"><div class="m PUT">PUT</div><div class="route">/api/employees/{id}/roles<span>Replace the employee's role list</span></div></div>
+      <div class="ep"><div class="m POST">POST</div><div class="route">/api/employees/import-csv<span>Bulk CSV import (multipart, ≤10 MB, auto-delimiter)</span></div></div>
+    </div>
+
+    <div class="grp-h">Attendance</div>
+    <div class="api">
+      <div class="ep"><div class="m POST">POST</div><div class="route">/api/attendance/upload<span>Upload punch export, reconcile vs rosters (multipart)</span></div></div>
+      <div class="ep"><div class="m POST">POST</div><div class="route">/api/attendance/reconcile<span>Re-reconcile edited punch text (JSON body)</span></div></div>
+      <div class="ep"><div class="m GET">GET</div><div class="route">/api/attendance/fetch-raw<span>Source C — raw Oracle punches for a date range</span></div></div>
+      <div class="ep"><div class="m GET">GET</div><div class="route">/api/attendance/fetch<span>Source B — SmartHCM daily summary for an employee</span></div></div>
+    </div>
+
+    <div class="grp-h">Roster</div>
+    <div class="api">
+      <div class="ep"><div class="m GET">GET</div><div class="route">/api/roster/{id}<span>Shift roster for a date (defaults today; 502 on upstream failure)</span></div></div>
+    </div>
+
+    <div class="grp-h">Roles</div>
+    <div class="api">
+      <div class="ep"><div class="m GET">GET</div><div class="route">/api/roles<span>List the role catalog</span></div></div>
+      <div class="ep"><div class="m POST">POST</div><div class="route">/api/roles<span>Add a role (201)</span></div></div>
+      <div class="ep"><div class="m PUT">PUT</div><div class="route">/api/roles/{name}<span>Update a role</span></div></div>
+      <div class="ep"><div class="m PUT" style="background:rgba(251,113,133,.16);color:var(--red);border-color:rgba(251,113,133,.4)">DEL</div><div class="route">/api/roles/{name}<span>Delete a role (204)</span></div></div>
+    </div>
+
+    <div class="grp-h">Leaves</div>
+    <div class="api">
+      <div class="ep"><div class="m GET">GET</div><div class="route">/api/leaves/fetch<span>Fetch from SmartHCM &amp; store (employeeId, password)</span></div></div>
+      <div class="ep"><div class="m GET">GET</div><div class="route">/api/leaves/{id}<span>List locally stored leaves for an employee</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXTERNAL APIS -->
+<section id="external">
+  <div class="wrap">
+    <div class="kicker">Integrations</div>
+    <h2>External APIs &amp; Services Used</h2>
+    <p class="sub">HrAuth orchestrates several external systems through ports, choosing a provider based on which credentials/connection strings are configured.</p>
+    <div class="grid g2">
+      <div class="ext">
+        <div class="e">🛡️</div>
+        <div>
+          <h3>HaramAPI — HR Identity</h3>
+          <code>POST https://hrapi.qm.edu.sa/api/hr/auth/*</code>
+          <p>The authoritative identity provider. Handles <b>login</b>, <b>refresh-token</b> and <b>validate-token</b>. Optional secure-client mode via an <code>X-Hr-Login-Gateway-Token</code> header. Responses parsed defensively (snake_case &amp; camelCase tolerant).</p>
+        </div>
+      </div>
+      <div class="ext">
+        <div class="e">🏢</div>
+        <div>
+          <h3>SmartHCM Web Service</h3>
+          <code>https://hr.qm.edu.sa/ws/SmartHCMWS.asmx</code>
+          <p>SOAP/ASMX service for employee directory, positions, supervisors, rosters and daily attendance summaries. Authenticated with a token key + security key and an admin employee credential.</p>
+        </div>
+      </div>
+      <div class="ext">
+        <div class="e">🗄️</div>
+        <div>
+          <h3>Oracle Database</h3>
+          <code>Oracle.ManagedDataAccess.Core 23.6.1</code>
+          <p>Direct access to raw attendance-machine punches and an alternative employee directory source, used as a fallback to the SmartHCM API.</p>
+        </div>
+      </div>
+      <div class="ext">
+        <div class="e">🐘</div>
+        <div>
+          <h3>PostgreSQL</h3>
+          <code>Npgsql + EF Core 9.0.4</code>
+          <p>The app's own store — employees, attendance_records, reconciliation_runs &amp; roles. Uses native <code>text[]</code> arrays and <code>jsonb</code>. Migrations applied on startup (best-effort).</p>
+        </div>
+      </div>
+    </div>
+    <p class="note">⚙️ Provider selection is conditional: directory/attendance data comes from the SmartHCM API → Oracle → ASMX fallback depending on which credentials are present (see <code>Infrastructure/DependencyInjection.cs</code>).</p>
+  </div>
+</section>
+
+<!-- AUTH FLOW -->
+<section id="flow">
+  <div class="wrap">
+    <div class="kicker">End to end</div>
+    <h2>Authentication Flow</h2>
+    <p class="sub">How a login request travels from the Dawam SPA through the layers to the external identity API and back.</p>
+    <div class="flow">
+      <div class="step"><div class="num">1</div><div class="b"><b>Dawam SPA → POST /api/auth/login</b><p>Browser sends <code>{ userName, password }</code> to the Web API.</p></div></div>
+      <div class="step"><div class="num">2</div><div class="b"><b>AuthController → AuthenticationService</b><p>Controller delegates to the use-case service in the Application layer.</p></div></div>
+      <div class="step"><div class="num">3</div><div class="b"><b>IHrAuthProvider.LoginAsync()</b><p>Port call → <code>HrAuthProvider</code> POSTs to <code>https://hrapi.qm.edu.sa/api/hr/auth/login</code> (optional gateway-token header).</p></div></div>
+      <div class="step"><div class="num">4</div><div class="b"><b>Parse → AuthSession + audit</b><p><code>HrAuthSessionParser</code> builds the domain session; <code>EmployeeRepository.UpsertAsync</code> writes a local audit row (first seen / last login). No credentials stored.</p></div></div>
+      <div class="step"><div class="num">5</div><div class="b"><b>← AuthResult to browser</b><p>Returns access/refresh tokens, expiry, user id, display name &amp; roles. SPA stores it in <code>sessionStorage</code> and navigates to the dashboard.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section id="stack">
+  <div class="wrap">
+    <div class="kicker">Under the hood</div>
+    <h2>Technology Stack</h2>
+    <p class="sub">The front-end has no build step — JSX is transpiled in the browser by Babel standalone.</p>
+    <div class="tech">
+      <div class="chip"><b>.NET / ASP.NET Core</b><span>9.0</span></div>
+      <div class="chip"><b>C#</b><span>13 · nullable refs</span></div>
+      <div class="chip"><b>EF Core + Npgsql</b><span>9.0.4</span></div>
+      <div class="chip"><b>Oracle.ManagedDataAccess</b><span>23.6.1</span></div>
+      <div class="chip"><b>Swashbuckle / Swagger</b><span>10.1.7</span></div>
+      <div class="chip"><b>React (CDN UMD)</b><span>18.3.1</span></div>
+      <div class="chip"><b>Babel standalone</b><span>7.29.0</span></div>
+      <div class="chip"><b>Tabler Icons</b><span>3.5.0</span></div>
+      <div class="chip"><b>PostgreSQL</b><span>store</span></div>
+    </div>
+
+    <div class="grid g3" style="margin-top:26px">
+      <div class="card"><div class="ico">📦</div><h3>employees</h3><p>Id, UserName, DisplayName, Position, Supervisor, Roles<code>[]</code>, FirstSeen / LastLogin.</p></div>
+      <div class="card"><div class="ico">📦</div><h3>attendance_records</h3><p>EmployeeId, RawId, Timestamp, Status/Verify/WorkCode, SourceFile, ImportedUtc.</p></div>
+      <div class="card"><div class="ico">📦</div><h3>reconciliation_runs</h3><p>uuid PK, FileName, late/early/missing counts, DaysJson (<code>jsonb</code>).</p></div>
+      <div class="card"><div class="ico">📦</div><h3>roles</h3><p>Name (PK), Description — the assignable role catalog.</p></div>
+      <div class="card"><div class="ico">📦</div><h3>leaves</h3><p>Per-employee leave records fetched from SmartHCM, consumed during reconciliation.</p></div>
+      <div class="card"><div class="ico">📦</div><h3>roster_cache</h3><p>Cached per-employee/per-date shift rosters to avoid repeated SmartHCM calls.</p></div>
+    </div>
+    <p class="note">🗃️ EF Core migrations: <code>InitialCreate</code> → <code>AddRoleCatalog</code> → <code>SyncProfileAndRosterCache</code> → <code>AddLeaves</code>. Applied on startup (best-effort — the app still boots if the DB is unavailable).</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <b>HrAuth.CleanArchitecture</b> — generated project overview.
+    <div class="meta">
+      <span>Solution: <code>HrAuth.sln</code></span>
+      <span>Run: <code>dotnet run --project src/HrAuth.WebApi --urls "http://localhost:5080;https://localhost:7080"</code></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

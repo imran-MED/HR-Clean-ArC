@@ -1,0 +1,222 @@
+/* ============================================================================
+   Halaqat Design System — Colors & Typography Tokens
+   ----------------------------------------------------------------------------
+   Design tokens for an Arabic-first Quran Halaqa (study circle) admin UI,
+   built on the Vuexy admin template foundation. RTL-first.
+   ============================================================================ */
+
+/* ---------- Fonts (Google Fonts fallbacks — see README "Font substitutions") */
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Public+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* ============================================================
+     COLOR — Core palette (from Figma metadata, ordered by usage)
+     ============================================================ */
+
+  /* Text + surface neutrals (Vuexy "cool gray" ramp, muted purple-brown) */
+  --color-text:          rgb(47, 43, 61);       /* headings, primary text */
+  --color-text-90:       rgba(47, 43, 61, 0.9); /* body text (most common) */
+  --color-text-70:       rgba(47, 43, 61, 0.7); /* secondary labels */
+  --color-text-60:       rgba(47, 43, 61, 0.6); /* tertiary */
+  --color-text-50:       rgba(47, 43, 61, 0.5); /* placeholder */
+  --color-text-40:       rgba(47, 43, 61, 0.4); /* disabled, muted */
+  --color-text-30:       rgba(47, 43, 61, 0.3);
+  --color-border:        rgba(47, 43, 61, 0.12); /* default 1px borders */
+  --color-border-strong: rgba(47, 43, 61, 0.16);
+  --color-divider:       rgba(47, 43, 61, 0.08); /* table row dividers, menu hover */
+  --color-scrim:         rgba(47, 43, 61, 0.14); /* shadows */
+
+  --color-bg:            rgb(248, 247, 250);  /* page background (soft lavender-white) */
+  --color-bg-alt:        rgb(243, 242, 243);  /* muted chip fill */
+  --color-surface:       rgb(255, 255, 255);  /* card background */
+  --color-surface-2:     rgb(250, 250, 252);  /* nested surface */
+
+  /* BRAND — Deep emerald (primary) + muted gold (accent). These REPLACE
+     the default Vuexy purple/violet with an Islamic-education palette. */
+  --color-primary:        rgb(49, 92, 78);     /* deep emerald — PRIMARY */
+  --color-primary-dark:   rgb(37, 71, 60);
+  --color-primary-10:     rgba(49, 92, 78, 0.10);
+  --color-primary-16:     rgba(49, 92, 78, 0.16);
+  --color-primary-shadow: rgba(115, 103, 240, 0.30); /* (legacy Vuexy — used on primary btn) */
+
+  --color-accent:         rgb(177, 143, 93);   /* warm gold — ACCENT (secondary CTA) */
+  --color-accent-shadow:  rgba(177, 143, 93, 0.16);
+  --color-accent-10:      rgba(177, 143, 93, 0.10);
+
+  /* Legacy Vuexy violet — kept ONLY for shadows and a few stat highlights */
+  --color-violet:         rgb(115, 103, 240);
+  --color-violet-70:      rgba(115, 103, 240, 0.70);
+  --color-violet-30:      rgba(115, 103, 240, 0.30);
+
+  /* Semantic — status colors */
+  --color-success:        rgb(40, 199, 111);   /* green — attendance, active */
+  --color-success-dark:   rgb(56, 142, 60);    /* outlined / text variant */
+  --color-success-bg:     rgba(40, 199, 111, 0.12);
+
+  --color-info:           rgb(0, 186, 209);    /* teal — "remote session" chip */
+  --color-info-alt:       rgb(33, 150, 243);   /* blue — secondary info */
+  --color-info-bg:        rgba(0, 186, 209, 0.12);
+
+  --color-warning:        rgb(255, 159, 67);   /* orange — late / warning */
+  --color-warning-bg:     rgba(255, 159, 67, 0.12);
+
+  --color-danger:         rgb(255, 76, 81);    /* red — absent, error */
+  --color-danger-dark:    rgb(236, 34, 31);    /* text variant */
+  --color-danger-bg:      rgb(254, 233, 231);
+  --color-danger-strong:  rgb(230, 68, 73);
+
+  --color-gold:           rgb(218, 178, 23);   /* rating stars */
+  --color-indigo-deep:    rgb(79, 55, 138);    /* occasional headline accent */
+
+  --color-muted-gray:     rgb(128, 131, 144);  /* icon-only, dimmed fg */
+  --color-chip-gray:      rgb(200, 200, 200);
+
+  /* ============================================================
+     TYPOGRAPHY — Font families
+     ============================================================
+     Almarai   → Arabic UI (all right-to-left copy, labels, body)
+     Public Sans → Latin UI (Vuexy default — logo wordmark, numerals)
+     Inter     → fine print / small caption overrides
+     Roboto    → legacy fallback
+  */
+  --font-ar:      'Almarai', 'Noto Kufi Arabic', system-ui, sans-serif;
+  --font-latin:   'Public Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Public Sans', 'Almarai', system-ui, sans-serif;
+  --font-mono:    ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Type scale — observed from Figma */
+  --fs-xs:   12px;   /* Inter 12 — fine print */
+  --fs-sm:   13px;   /* Public Sans / Almarai 13 — table body, caption */
+  --fs-base: 15px;   /* Almarai 15 — primary body & menu (MOST COMMON) */
+  --fs-md:   16px;   /* section sub-headings */
+  --fs-lg:   18px;   /* card titles "الدخول السريع" */
+  --fs-xl:   20px;   /* feature titles */
+  --fs-2xl:  22px;   /* Public Sans 22 Bold — logo wordmark */
+  --fs-3xl:  24px;   /* welcome / hero number */
+  --fs-4xl:  30px;   /* Almarai Bold 30 — big stat */
+
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-bold:    700;
+  --fw-black:   800;
+
+  --lh-tight: 1.15;
+  --lh-snug:  1.35;
+  --lh-base:  1.47;   /* 22/15 — Vuexy default */
+  --lh-loose: 1.6;
+
+  --ls-tight:  -0.15px;
+  --ls-normal: 0;
+  --ls-wide:   0.25px; /* logo wordmark */
+
+  /* ============================================================
+     SPACING / RADIUS / SHADOW
+     ============================================================ */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;  /* default gutter */
+  --space-7: 30px;  /* card inner pad */
+  --space-8: 40px;
+  --space-10: 48px; /* page gutter */
+
+  --radius-sm:  4px;   /* small buttons */
+  --radius-md:  6px;   /* cards, most buttons — DEFAULT */
+  --radius-lg:  8px;
+  --radius-xl: 10px;
+  --radius-full: 9999px;
+
+  /* Vuexy uses soft colored "primary-shadow" under CTAs, NOT grey drop shadows */
+  --shadow-sm:        0 1px 2px 0 rgba(47, 43, 61, 0.08);
+  --shadow-primary:   0 2px 6px 0 var(--color-primary-shadow);  /* violet-30 under primary btn */
+  --shadow-accent:    0 2px 6px 0 var(--color-accent-shadow);
+  --shadow-card:      0 2px 6px 0 rgba(47, 43, 61, 0.06);
+  --shadow-card-hover:0 4px 18px 0 rgba(47, 43, 61, 0.10);
+  --shadow-menu:      0 4px 16px 0 rgba(47, 43, 61, 0.14);
+}
+
+/* ============================================================================
+   SEMANTIC ELEMENT STYLES — opt-in classes
+   ============================================================================ */
+
+.halaqat-h1 {
+  font-family: var(--font-ar);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-4xl);
+  line-height: var(--lh-tight);
+  color: var(--color-text-90);
+}
+
+.halaqat-h2 {
+  font-family: var(--font-ar);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-2xl);
+  line-height: var(--lh-snug);
+  color: var(--color-text-90);
+}
+
+.halaqat-h3 {
+  font-family: var(--font-ar);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-lg);
+  line-height: var(--lh-snug);
+  color: var(--color-text-90);
+}
+
+.halaqat-section-title {
+  font-family: var(--font-ar);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-lg);
+  line-height: var(--lh-snug);
+  color: var(--color-text-90);
+}
+
+.halaqat-body {
+  font-family: var(--font-ar);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
+  color: var(--color-text-90);
+}
+
+.halaqat-small {
+  font-family: var(--font-ar);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-base);
+  color: var(--color-text-70);
+}
+
+.halaqat-caption {
+  font-family: var(--font-ar);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-snug);
+  color: var(--color-text-60);
+}
+
+.halaqat-label {
+  font-family: var(--font-ar);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-sm);
+  color: var(--color-text-60);
+}
+
+.halaqat-number {
+  /* Arabic + Latin numerals both use Almarai here in the design, but numbers
+     pair well with Public Sans for dashboards. */
+  font-family: var(--font-ar);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-90);
+}
+
+.halaqat-brand-wordmark {
+  font-family: var(--font-latin);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-2xl);
+  letter-spacing: var(--ls-wide);
+  color: var(--color-text-90);
+}

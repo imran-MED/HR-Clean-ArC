@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HrAuth — Sign in</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="view login-bg">
+    <section class="card auth-card">
+      <div class="brand">
+        <div class="brand-mark">HR</div>
+        <h1>HrAuth</h1>
+        <p class="muted">Sign in to your HR account</p>
+      </div>
+      <form id="login-form" autocomplete="on">
+        <label for="userName">Username</label>
+        <input id="userName" name="userName" type="text" required
+               placeholder="Enter your username" />
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required
+               placeholder="••••••••" />
+
+        <button id="login-btn" type="submit" class="btn btn-primary">
+          <span class="btn-label">Sign in</span>
+          <span class="spinner" hidden></span>
+        </button>
+
+        <p id="login-error" class="error" hidden></p>
+      </form>
+      <p class="muted small">Authenticated against the HrAuth API</p>
+    </section>
+  </main>
+  <script src="login.js"></script>
+</body>
+</html>

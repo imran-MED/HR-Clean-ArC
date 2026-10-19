@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HrAuth â€” Upload Attendance</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-brand">
+      <div class="brand-mark sm">HR</div><span>HrAuth</span>
+    </div>
+    <nav class="topnav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="roster.html">Roster</a>
+      <a href="upload.html" class="active">Upload attendance</a>
+      <a href="employees.html">Employees</a>
+      <a href="roles.html">Roles</a>
+      <a href="reconciliation.html">Reconciliation</a>
+      <a href="absent-report.html">Absent report</a>
+    </nav>
+    <div class="topbar-user">
+      <span id="topbar-username" class="muted"></span>
+      <button id="logout-btn" class="btn btn-ghost btn-sm">Sign out</button>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <section class="hero card">
+      <div>
+        <p class="muted">Attendance machine</p>
+        <h2>Upload attendance data</h2>
+        <p class="muted small">Employee IDs are normalized to 8 digits on upload.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Select file</h3>
+      <div class="uploader">
+        <p class="muted small">
+          Expected line format:
+          <code class="inline">EmployeeId Date Time Status Verify WorkCode Reserved</code>
+          â€” e.g. <code class="inline">0002147 2025-12-01 06:18:17 1 0 1 0</code>
+        </p>
+        <div class="file-input-row">
+          <input id="file" type="file" accept=".txt,.dat,.log,.csv" />
+          <button id="upload-btn" class="btn btn-primary btn-inline">
+            <span class="btn-label">Upload &amp; process</span>
+            <span class="spinner" hidden></span>
+          </button>
+        </div>
+        <p id="upload-error" class="error" hidden></p>
+      </div>
+    </section>
+
+    <section id="result-section" class="card" hidden>
+      <h3>Result â€” <span id="result-file" class="muted"></span></h3>
+      <div class="stats">
+        <div class="stat">
+          <div id="stat-total" class="num">0</div><div class="lbl">Lines read</div>
+        </div>
+        <div class="stat ok">
+          <div id="stat-imported" class="num">0</div><div class="lbl">Imported</div>
+        </div>
+        <div class="stat bad">
+          <div id="stat-skipped" class="num">0</div><div class="lbl">Skipped</div>
+        </div>
+      </div>
+      <div class="result-actions">
+        <a id="view-recon" href="reconciliation.html" class="btn btn-primary btn-inline">
+          View roster reconciliation â†’
+        </a>
+        <button id="download-btn" class="btn btn-sm">Download normalized file</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Original ID</th>
+              <th>Employee ID (8-digit)</th>
+              <th>Timestamp</th>
+              <th>Status</th>
+              <th>Verify</th>
+              <th>WorkCode</th>
+              <th>Reserved</th>
+            </tr>
+          </thead>
+          <tbody id="result-rows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="errors-section" class="card" hidden>
+      <h3>Skipped lines</h3>
+      <ul id="errors-list" class="errors-list"></ul>
+    </section>
+  </main>
+
+  <p id="toast" class="toast" hidden></p>
+  <script src="upload.js"></script>
+</body>
+</html>
